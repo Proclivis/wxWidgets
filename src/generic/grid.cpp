@@ -240,6 +240,14 @@ void wxGridRowHeaderRendererDefault::DrawBorder(const wxGrid& WXUNUSED(grid),
                                                 wxDC& dc,
                                                 wxRect& rect) const
 {
+#if _USE_VISATTR
+    wxColour lbg = lva.colBg;
+#else
+    wxColour lbg = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+#endif
+    dc.SetBrush(lbg);
+    dc.DrawRectangle(rect);
+    
     dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW)));
     dc.DrawLine(rect.GetRight(), rect.GetTop(),
                 rect.GetRight(), rect.GetBottom());
