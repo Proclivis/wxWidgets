@@ -150,6 +150,7 @@ public:
                        wxHD_ALLOW_HIDE |
                        (owner->CanDragColMove() ? wxHD_ALLOW_REORDER : 0))
     {
+        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
 protected:
@@ -319,12 +320,15 @@ protected:
     wxDECLARE_NO_COPY_CLASS(wxGridSubwindow);
 };
 
+#include "wx/dcbuffer.h"
+
 class WXDLLIMPEXP_ADV wxGridRowLabelWindow : public wxGridSubwindow
 {
 public:
     wxGridRowLabelWindow(wxGrid *parent)
       : wxGridSubwindow(parent)
     {
+        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
 
@@ -344,6 +348,7 @@ public:
     wxGridColLabelWindow(wxGrid *parent)
         : wxGridSubwindow(parent)
     {
+        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
 
@@ -363,6 +368,7 @@ public:
     wxGridCornerLabelWindow(wxGrid *parent)
         : wxGridSubwindow(parent)
     {
+        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
 private:
@@ -382,6 +388,7 @@ public:
                           wxWANTS_CHARS | wxCLIP_CHILDREN,
                           "GridWindow")
     {
+        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
 

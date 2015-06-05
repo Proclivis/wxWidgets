@@ -54,6 +54,8 @@
 #include "wx/generic/grideditors.h"
 #include "wx/generic/private/grid.h"
 
+#include "wx/dcbuffer.h"
+
 const char wxGridNameStr[] = "grid";
 
 // Required for wxIs... functions
@@ -1619,7 +1621,7 @@ wxEND_EVENT_TABLE()
 
 void wxGridRowLabelWindow::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
-    wxPaintDC dc(this);
+    wxAutoBufferedPaintDC dc( this );
 
     // NO - don't do this because it will set both the x and y origin
     // coords to match the parent scrolled window and we just want to
@@ -1657,8 +1659,15 @@ wxEND_EVENT_TABLE()
 
 void wxGridColLabelWindow::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
-    wxPaintDC dc(this);
-
+    wxAutoBufferedPaintDC dc( this );
+/*
+#if _USE_VISATTR
+     wxColour lbg = lva.colBg;
+#else
+    wxColour lbg = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+#endif
+    dc.FloodFill(0, 0, lbg);
+*/
     // NO - don't do this because it will set both the x and y origin
     // coords to match the parent scrolled window and we just want to
     // set the x coord  - MB
@@ -1695,7 +1704,7 @@ wxEND_EVENT_TABLE()
 
 void wxGridCornerLabelWindow::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
-    wxPaintDC dc(this);
+    wxAutoBufferedPaintDC dc( this );
 
     m_owner->DrawCornerLabel(dc);
 }
@@ -1727,7 +1736,15 @@ wxEND_EVENT_TABLE()
 
 void wxGridWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 {
-    wxPaintDC dc( this );
+    wxAutoBufferedPaintDC dc( this );
+/*
+#if _USE_VISATTR
+     wxColour lbg = lva.colBg;
+#else
+    wxColour lbg = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+#endif
+    dc.FloodFill(0, 0, lbg);
+*/
     m_owner->PrepareDC( dc );
     wxRegion reg = GetUpdateRegion();
     wxGridCellCoordsArray dirtyCells = m_owner->CalcCellsExposed( reg );
@@ -5860,8 +5877,23 @@ wxGrid::DoDrawGridLines(wxDC& dc,
 
 void wxGrid::DrawRowLabels( wxDC& dc, const wxArrayInt& rows)
 {
-    if ( !m_numRows )
+    if ( !m_numRows ) {
+#if _USE_VISATTR
+    wxColour gfg = gva.colFg;
+    wxColour gbg = gva.colBg;
+    wxColour lfg = lva.colFg;
+    wxColour lbg = lva.colBg;
+#else
+    wxColour gfg = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWTEXT );
+    wxColour gbg = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW );
+    wxColour lfg = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWTEXT );
+    wxColour lbg = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+#endif
+        dc.SetBrush(gbg);
+
+        dc.DrawRectangle(GetRect());
         return;
+    }
 
     const size_t numLabels = rows.GetCount();
     for ( size_t i = 0; i < numLabels; i++ )
@@ -5929,8 +5961,23 @@ void wxGrid::SetUseNativeColLabels( bool native )
 
 void wxGrid::DrawColLabels( wxDC& dc,const wxArrayInt& cols )
 {
-    if ( !m_numCols )
+    if ( !m_numCols ) {
+#if _USE_VISATTR
+    wxColour gfg = gva.colFg;
+    wxColour gbg = gva.colBg;
+    wxColour lfg = lva.colFg;
+    wxColour lbg = lva.colBg;
+#else
+    wxColour gfg = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWTEXT );
+    wxColour gbg = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW );
+    wxColour lfg = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWTEXT );
+    wxColour lbg = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+#endif
+        dc.SetBrush(gbg);
+
+        dc.DrawRectangle(GetRect());
         return;
+    }
 
     const size_t numLabels = cols.GetCount();
     for ( size_t i = 0; i < numLabels; i++ )
