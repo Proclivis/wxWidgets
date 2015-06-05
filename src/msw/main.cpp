@@ -268,7 +268,8 @@ wxMSWEntryCommon(HINSTANCE hInstance, int nCmdShow)
     // break the command line in words
     wxArrayString args;
 
-    const wxChar *cmdLine = ::GetCommandLine();
+//    const wxChar *cmdLine = ::GetCommandLine();
+    const wxChar *cmdLine = NULL;
     if ( cmdLine )
     {
         args = wxCmdLineParser::ConvertStringToArgs(cmdLine);
