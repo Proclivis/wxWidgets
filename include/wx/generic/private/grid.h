@@ -150,7 +150,6 @@ public:
                        wxHD_ALLOW_HIDE |
                        (owner->CanDragColMove() ? wxHD_ALLOW_REORDER : 0))
     {
-        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
 protected:
@@ -368,7 +367,6 @@ public:
     wxGridCornerLabelWindow(wxGrid *parent)
         : wxGridSubwindow(parent)
     {
-        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
 private:

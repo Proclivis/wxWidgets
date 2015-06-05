@@ -958,7 +958,6 @@ public:
     // ctor and Create() create the grid window, as with the other controls
     wxGrid() { 
         Init(); 
-        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
     wxGrid(wxWindow *parent,
@@ -971,7 +970,6 @@ public:
         Init();
 
         Create(parent, id, pos, size, style, name);
-        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
     bool Create(wxWindow *parent,
@@ -1711,7 +1709,6 @@ public:
     {
         Init();
         Create(parent, wxID_ANY, wxPoint(x, y), wxSize(w, h), style, name);
-        SetBackgroundStyle(wxBG_STYLE_PAINT);
     }
 
     void SetCellValue( const wxString& val, int row, int col )

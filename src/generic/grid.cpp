@@ -55,6 +55,7 @@
 #include "wx/generic/private/grid.h"
 
 #include "wx/dcbuffer.h"
+#include "wx/arrimpl.cpp"
 
 const char wxGridNameStr[] = "grid";
 
@@ -114,8 +115,6 @@ const int GRID_HASH_SIZE = 100;
 const int DRAG_SENSITIVITY = 3;
 
 } // anonymous namespace
-
-#include "wx/arrimpl.cpp"
 
 WX_DEFINE_OBJARRAY(wxGridCellCoordsArray)
 WX_DEFINE_OBJARRAY(wxGridCellWithAttrArray)
@@ -269,6 +268,14 @@ void wxGridColumnHeaderRendererDefault::DrawBorder(const wxGrid& WXUNUSED(grid),
                                                    wxDC& dc,
                                                    wxRect& rect) const
 {
+#if _USE_VISATTR
+    wxColour lbg = lva.colBg;
+#else
+    wxColour lbg = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+#endif
+    dc.SetBrush(lbg);
+    dc.DrawRectangle(rect);
+
     dc.SetPen(wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW)));
     dc.DrawLine(rect.GetRight(), rect.GetTop(),
                 rect.GetRight(), rect.GetBottom());
@@ -1669,6 +1676,7 @@ void wxGridColLabelWindow::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
     wxAutoBufferedPaintDC dc( this );
 /*
+// Failed attempt to prevent black squares.
 #if _USE_VISATTR
      wxColour lbg = lva.colBg;
 #else
@@ -1712,7 +1720,7 @@ wxEND_EVENT_TABLE()
 
 void wxGridCornerLabelWindow::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
-    wxAutoBufferedPaintDC dc( this );
+    wxPaintDC dc( this );
 
     m_owner->DrawCornerLabel(dc);
 }
@@ -1746,6 +1754,7 @@ void wxGridWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 {
     wxAutoBufferedPaintDC dc( this );
 /*
+// Failed attempt to prevent black squares.
 #if _USE_VISATTR
      wxColour lbg = lva.colBg;
 #else
