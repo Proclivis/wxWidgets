@@ -1637,6 +1637,8 @@ wxEND_EVENT_TABLE()
 void wxGridRowLabelWindow::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
     wxAutoBufferedPaintDC dc( this );
+    dc.Clear();
+
 
     // NO - don't do this because it will set both the x and y origin
     // coords to match the parent scrolled window and we just want to
@@ -1675,15 +1677,8 @@ wxEND_EVENT_TABLE()
 void wxGridColLabelWindow::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
     wxAutoBufferedPaintDC dc( this );
-/*
-// Failed attempt to prevent black squares.
-#if _USE_VISATTR
-     wxColour lbg = lva.colBg;
-#else
-    wxColour lbg = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
-#endif
-    dc.FloodFill(0, 0, lbg);
-*/
+    dc.Clear();
+
     // NO - don't do this because it will set both the x and y origin
     // coords to match the parent scrolled window and we just want to
     // set the x coord  - MB
@@ -1721,6 +1716,7 @@ wxEND_EVENT_TABLE()
 void wxGridCornerLabelWindow::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
     wxPaintDC dc( this );
+    dc.Clear();
 
     m_owner->DrawCornerLabel(dc);
 }
@@ -1753,15 +1749,8 @@ wxEND_EVENT_TABLE()
 void wxGridWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 {
     wxAutoBufferedPaintDC dc( this );
-/*
-// Failed attempt to prevent black squares.
-#if _USE_VISATTR
-     wxColour lbg = lva.colBg;
-#else
-    wxColour lbg = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
-#endif
-    dc.FloodFill(0, 0, lbg);
-*/
+    dc.Clear();
+
     m_owner->PrepareDC( dc );
     wxRegion reg = GetUpdateRegion();
     wxGridCellCoordsArray dirtyCells = m_owner->CalcCellsExposed( reg );
